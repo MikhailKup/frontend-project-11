@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>RSS Agregator</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header class="header">
+		<div class="header__container">
+			<div class="header__title">RSS агрегатор</div>
+			<div class="header__subtitle">Начните читать RSS сегодня! Это легко, это красиво.</div>
+			<form action="" class="header__form form-header">
+				<div class="form-header__left">
+					<input id="url-input" autofocus="true" required="" name="url" aria-label="url" class="form-header__input" autocomplete="off" wfd-id="id0">
+					<label class="form-header__label" for="url">Ссылка RSS</label>
+				</div>
+				<div class="form-header__right">
+					<button type="submit" aria-label="add" class="btn form-header__btn">Добавить</button>
+				</div>
+			</form>
+			<div class="header__example">Пример: https://lorem-rss.hexlet.app/feed</div>
+			<div class="header__invalid hide">Ссылка должна быть валидным URL</div>	
+			<div class="header__valid hide">RSS успешно загружен</div>	
+		</div>
+	</header>
+
+	<main>
+		<section class="content">
+			<div class="content__posts posts">
+				<div class="content__title">Посты</div>
+				<div class="content__posts item-post">
+					<a href="" class="item-post__link blue-text">Lorem ipsum 2024-03-01T06:28:00Z</a>
+					<button class="item-post__btn">Просмотр</button>
+				</div>
+			</div>
+			<div class="content__feeds feeds">
+				<div class="content__title">Фиды</div>
+				<div class="feeds__boldText">Lorem ipsum feed for an interval of 1 minutes with 10 item(s)</div>
+				<div class="feeds__subText">This is a constantly updating lorem ipsum feed</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="footer__link">Created by
+			<a href="https://github.com/MikhailKup" target="_blank" class="blue-text">MikhailKup</a>
+		</div>
+	</footer>
+
+
+	<script src="js/bundle.js"></script>
+</body>
+</html>
