@@ -13,7 +13,32 @@ export default () => {
 		postsContainer: document.querySelector('.posts'),
 		feedsContainer: document.querySelector('.feeds'),
 		modal: document.querySelector('#modal'),
+		spanSpinner: document.createElement('span'),
+		spanLoading: document.createElement('span')
 	};
+
+	const initialState = {
+		rssForm: {
+		  state: 'filling',
+		  error: null,
+		  valid: true,
+		},
+		feeds: [],
+		posts: [],
+		uiState: {
+		  visitedPosts: new Set(),
+		  modalId: null,
+		},
+	};
+
+	const i18n = i18next.createInstance();
+	i18n.init({
+		lng: 'ru',
+		debug: true,
+		resources: {
+			ru,
+		},
+	});
 
 };
 
