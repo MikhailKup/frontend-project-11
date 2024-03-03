@@ -48,3 +48,14 @@
 * В файл импортирована функция proxify для корректной отправки запроса
 * Добавлена функция fetchData с аргументов в виде передаваемого url
 * Функция передает GET запрос к url через axios.get
+
+
+### 13. Добавлен файл parser.js в папку helpers
+* Добавлена функция getParsedXML c аргументом data
+* В функцию добавлен DOMParser() который преобразует переданный аргумент в DOM-элемент parsedXML
+* В parseFromString передаем аргумент data и application/xml(анализатор xml-данных)
+* Обрабатываем ошибку парсинга через константу parseError которая ссылается на элемент parsererror
+* Если такая ошибка присутствует в parsedXML, то создается новый обьект ошибки через new Error() с текстом из найденного элемента, через i18n возвращается текст интерфейса notValidRss
+* Получаем обьект feed со свойствами title и description которые мы получаем через ('channel title').textContent и ('channel description').textContent
+* Получаем массив postsArr который состоит из всех элементов item в parsedXML
+* Собираем массив posts из postsArr с помощью map(). Используем свойства title, description и link. Каждый post - это обьект

@@ -1,6 +1,8 @@
 import i18next from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
+import validateURL from './helpers/validator.js';
+import getParsedXML from './helpers/parser.js';
 
 
 export default () => {
