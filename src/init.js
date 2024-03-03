@@ -21,13 +21,13 @@ export default () => {
 		rssForm: {
 		  state: 'filling',
 		  error: null,
-		  valid: true,
+		  valid: true
 		},
 		feeds: [],
 		posts: [],
 		uiState: {
 		  visitedPosts: new Set(),
-		  modalId: null,
+		  modalId: null
 		},
 	};
 
@@ -36,7 +36,7 @@ export default () => {
 		lng: 'ru',
 		debug: true,
 		resources: {
-			ru,
+			ru
 		},
 	});
 
