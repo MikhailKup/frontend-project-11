@@ -89,7 +89,7 @@ const renderPosts = (state, elements, i18n) => {
 };
 
 // Errors
-const renderErrors = (error, elements, i18n) => {
+const renderError = (error, elements, i18n) => {
 	elements.feedbackContainer.textContent = '';
 	if (error) {
 		elements.input.readOnly = false;
@@ -108,5 +108,71 @@ const renderModal = (state, postId, elements) => {
 	elements.modal.querySelector('.modal-title').textContent = post.title;
 	elements.modal.querySelector('.modal-body').textContent = post.description;
 	elements.modal.querySelector('a.btn').href = post.link;
- };
+};
  
+
+const handleProcessState = (processState, elements, i18n) => {
+	switch (processState) {
+	  case 'filling':
+			elements.input.readOnly = false;
+			elements.button.disabled = false;
+			break;
+	  case 'processing':
+			elements.input.readOnly = true;
+			elements.button.disabled = true;
+			elements.button.innerHTML = '';
+			elements.spanSpinner.classList.add('spinner-border', 'spinner-border-sm');
+			elements.spanSpinner.setAttribute('role', 'status');
+			elements.spanSpinner.setAttribute('aria-hidden', 'true');
+			elements.button.append(elements.spanSpinner);
+			elements.spanLoading.classList.add('sr-only');
+			elements.spanLoading.textContent = '  Загрузка...';
+			elements.button.append(elements.spanLoading);
+			break;
+	  case 'success':
+			elements.input.readOnly = false;
+			elements.button.disabled = false;
+			elements.button.innerHTML = '';
+			elements.button.textContent = 'Добавить';
+			elements.form.reset();
+			elements.form.focus();
+			elements.feedbackContainer.classList.remove('text-danger');
+			elements.feedbackContainer.classList.add('text-success');
+			elements.feedbackContainer.textContent = i18n.t('form.success');
+			break;
+	  default:
+			throw new Error(`Unknown process state: ${processState}`);
+	}
+};
+
+export default (state, elements, i18n) => onChange(state, (path, value) => {
+	switch (path) {
+	  	case 'uiState.modalId':
+			renderModal(state, value, elements);
+			break;
+	  	case 'uiState.visitedPosts':
+			renderPosts(state, elements, i18n);
+			break;
+	  	case 'feeds':
+			renderFeeds(state, elements, i18n);
+			break;
+		case 'posts':
+			renderPosts(state, elements, i18n);
+			break;
+		case 'rssForm.error':
+			renderError(value, elements, i18n);
+			break;
+	  	case 'rssForm.valid':
+			if (!value) {
+				elements.input.classList.add('is-invalid');
+				return;
+			}
+			elements.input.classList.remove('is-invalid');
+			break;
+		case 'rssForm.state':
+			handleProcessState(value, elements, i18n);
+			break;
+		default:
+			throw new Error(`Unknown path: ${path}`);
+	}
+});
