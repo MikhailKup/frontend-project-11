@@ -101,3 +101,12 @@ const renderErrors = (error, elements, i18n) => {
 		elements.feedbackContainer.textContent = i18n.t(error);
 	}
 };
+
+// Modal
+const renderModal = (state, postId, elements) => {
+	const post = state.posts.find((item) => item.id === postId);
+	elements.modal.querySelector('.modal-title').textContent = post.title;
+	elements.modal.querySelector('.modal-body').textContent = post.description;
+	elements.modal.querySelector('a.btn').href = post.link;
+ };
+ 
