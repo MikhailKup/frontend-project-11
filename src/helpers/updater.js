@@ -2,7 +2,7 @@ import _ from 'lodash';
 import fetchData from './fetchData.js';
 import getParsedXML from './parser.js';
 
-export default (watchedState) => {
+const updatePosts = (watchedState) => {
 	const { feeds, posts } = watchedState;
 	const promises = feeds.map(({ url, id }) => fetchData(url)
 		.then(({ data }) => {
@@ -19,3 +19,5 @@ export default (watchedState) => {
 	Promise.all(promises)
     	.finally(() => setTimeout(() => updatePosts(watchedState), 5000));
 }
+
+export default updatePosts;
