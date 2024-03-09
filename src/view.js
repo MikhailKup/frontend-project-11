@@ -1,4 +1,4 @@
-import onChange from "on-change";
+import onChange from 'on-change';
 
 // Feeds
 const renderFeeds = (state, elements, i18n) => {
@@ -107,7 +107,6 @@ const renderModal = (state, postId, elements) => {
   elements.modal.querySelector('.modal-body').textContent = post.description;
   elements.modal.querySelector('a.btn').href = post.link;
 };
- 
 
 const handleProcessState = (processState, elements, i18n) => {
   switch (processState) {
