@@ -1,10 +1,10 @@
 import i18next from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
+import fetchData from './helpers/fetchData.js';
 import initView from './view.js';
 import ru from './locales/ru.js';
 import validateURL from './helpers/validator.js';
-import fetchData from './helpers/fetchData.js';
 import getParsedXML from './helpers/parser.js';
 import updatePosts from './helpers/updater.js';
 
@@ -55,20 +55,20 @@ export default () => {
 		const url = formData.get('url');
 		const urlsList = watchedState.feeds.map((feed) => feed.url);
 		validateURL(url, urlsList, i18n)
-		  	.then((validUrl) => {
+			.then((validUrl) => {
 				watchedState.rssForm.error = null;
 				watchedState.rssForm.state = 'processing';
 				elements.input.classList.remove('is-invalid');
 				return fetchData(validUrl);
-		  	})
-		  	.then(({ data }) => {
+			})
+			.then(({ data }) => {
 				const [feed, posts] = getParsedXML(data.contents);
 				const newFeed = { ...feed, id: _.uniqueId(), url };
 				const newPosts = posts.map((post) => ({ ...post, id: _.uniqueId(), feedId: newFeed.id }));
 				watchedState.feeds = [newFeed, ...watchedState.feeds];
 				watchedState.posts = [...newPosts, ...watchedState.posts];
 				watchedState.rssForm.state = 'success';
-		  	})
+			})
 			.catch((err) => {
 				watchedState.rssForm.valid = err.name !== 'ValidationError';
 				if (err.name === 'ValidationError') {
@@ -81,7 +81,7 @@ export default () => {
 				watchedState.rssForm.state = 'filling';
 			});
 	});
-
+	
 	elements.postsContainer.addEventListener('click', ({ target }) => {
 		if (target.closest('a')) {
 			const { id } = target.dataset;
@@ -93,7 +93,7 @@ export default () => {
 			watchedState.uiState.modalId = id;
 		}
 	});
-
+	
 	setTimeout(() => updatePosts(watchedState), 5000);
 };
 

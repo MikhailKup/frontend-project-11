@@ -1,25 +1,25 @@
-export default (xml) => {
-	const parsedXML = new DOMParser().parseFromString(xml, 'text/xml');
-	const parseError = parsedXML.querySelector('parsererror');
-	if (parseError) {
-		const textError = parseError.textContent;
-		const error = new Error(textError);
-		error.notValidRss = true;
-		throw error;
-	}
+export default (data) => {
+  const parsedXml = new DOMParser().parseFromString(data, 'application/xml');
+  const parseError = parsedXml.querySelector('parsererror');
+  if (parseError) {
+    const textError = parseError.textContent;
+    const error = new Error(textError);
+    error.NotValidRss = true;
+    throw error;
+  }
 
-	const feed = {
-		title: parsedXML.querySelector('channel title').textContent,
-		description: parsedXML.querySelector('channel description').textContent,
-	};
+  const feed = {
+    title: parsedXml.querySelector('channel title').textContent,
+    description: parsedXml.querySelector('channel description').textContent,
+  };
 
-	const postsArr = Array.from(parsedXML.querySelectorAll('item'));
-	const posts = postsArr.map((post) => (
-		{
-			title: post.querySelector('title').textContent,
-        	description: post.querySelector('description').textContent,
-        	link: post.querySelector('link').textContent,
-		}
-	));
-	return [feed, posts];
-}
+  const posts = Array.from(parsedXml.querySelectorAll('item'))
+    .map((item) => (
+      {
+        title: item.querySelector('title').textContent,
+        description: item.querySelector('description').textContent,
+        link: item.querySelector('link').textContent,
+      }
+    ));
+  return [feed, posts];
+};
