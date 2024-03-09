@@ -17,11 +17,16 @@ export default {
         test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
         use: 'file-loader',
       },
+			{
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),
+		new MiniCssExtractPlugin()
   ],
 };

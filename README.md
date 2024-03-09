@@ -9,11 +9,17 @@ In this project I improved my skills with pure JavaScript without frameworks, MV
 Node.js v18 and higher
 
 ## How to install and serve
+```
 make install
+```
 
+```
 make develop
+```
 
+```
 make build
+```
 
 ## Demo
 https://frontend-project-11-nine-zeta.vercel.app/
