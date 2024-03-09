@@ -58,6 +58,7 @@ export default () => {
 		  	.then((validUrl) => {
 				watchedState.rssForm.error = null;
 				watchedState.rssForm.state = 'processing';
+				elements.input.classList.remove('is-invalid');
 				return fetchData(validUrl);
 		  	})
 		  	.then(({ data }) => {
