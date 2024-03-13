@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import axios from 'axios';
 import _ from 'lodash';
-import { validateURL, fetchData, updatePosts } from './helpers.js';
+import { validateURL, proxify, updatePosts } from './helpers.js';
 import getParsedXML from './parser.js';
 import ru from './locales/ru.js';
 import initView from './view.js';
@@ -25,10 +25,6 @@ export default () => {
       error: null,
       valid: true,
     },
-		loadingProcess: {
-			status: 'filling',
-			error: null,
-		},
     feeds: [],
     posts: [],
     uiState: {
@@ -59,7 +55,9 @@ export default () => {
 						watchedState.rssForm.error = null;
 						watchedState.rssForm.state = 'processing';
 						elements.input.classList.remove('is-invalid');
-						return fetchData(validUrl);
+						return axios.get(proxify(validUrl), {
+							timeout: 10000
+						});
 					})
 					.then(({ data }) => {
 						const [feed, posts] = getParsedXML(data.contents);
@@ -94,6 +92,6 @@ export default () => {
 					watchedState.uiState.modalId = id;
 				}
 			});
-			setTimeout(() => updatePosts(watchedState), 5000);
+			setTimeout(() => updatePosts(watchedState));
     });
 };

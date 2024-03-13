@@ -33,16 +33,12 @@ const proxify = (url, base = 'https://allorigins.hexlet.app/get') => {
   return newUrl;
 };
 
-// FetchData
-const fetchData = (url) => axios.get(proxify(url), {
-  timeout: 10000
-});
-
 // Updater
 const updatePosts = (watchedState) => {
   const { feeds, posts } = watchedState;
-  const promises = feeds.map(({ url, id }) => fetchData(url)
-    .then(({ data }) => {
+  const promises = feeds.map(({ url, id }) => axios.get(proxify(url), {
+		timeout: 10000
+	}).then(({ data }) => {
       const [, receivedPosts] = getParsedXML(data.contents);
       const oldPosts = posts.filter((post) => post.feedId === id);
       const addedPosts = _.differenceBy(receivedPosts, oldPosts, 'link');
@@ -57,4 +53,4 @@ const updatePosts = (watchedState) => {
     .finally(() => setTimeout(() => updatePosts(watchedState), flowCheckDelay));
 };
 
-export { validateURL, fetchData, updatePosts };
+export { validateURL, proxify, updatePosts };
