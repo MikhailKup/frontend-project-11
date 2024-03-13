@@ -1,20 +1,21 @@
 import * as yup from 'yup';
 import axios from 'axios';
 import _ from 'lodash';
+import getParsedXML from './parser.js';
 
 const flowCheckDelay = 5000;
 
 // Validator
 const validateURL = (url, urlsList, i18n) => {
-  yup.setLocale({
-    string: {
-      url: i18n.t('form.errors.notValidUrl'),
-    },
-    mixed: {
-      required: i18n.t('form.errors.required'),
-      notOneOf: i18n.t('form.errors.notUniqueUrl'),
-    },
-  });
+	yup.setLocale({
+		string: {
+			url: i18n.t('form.errors.notValidUrl'),
+		},
+		mixed: {
+			required: i18n.t('form.errors.required'),
+			notOneOf: i18n.t('form.errors.notUniqueUrl'),
+		},
+	});
   const schema = yup
     .string()
     .required()
@@ -22,7 +23,6 @@ const validateURL = (url, urlsList, i18n) => {
     .notOneOf(urlsList);
   return schema.validate(url);
 };
-
 
 // Proxy
 const proxify = (url, base = 'https://allorigins.hexlet.app/get') => {
@@ -33,12 +33,10 @@ const proxify = (url, base = 'https://allorigins.hexlet.app/get') => {
   return newUrl;
 };
 
-
 // FetchData
 const fetchData = (url) => axios.get(proxify(url), {
   timeout: 10000
 });
-
 
 // Updater
 const updatePosts = (watchedState) => {
@@ -59,6 +57,4 @@ const updatePosts = (watchedState) => {
     .finally(() => setTimeout(() => updatePosts(watchedState), flowCheckDelay));
 };
 
-
-
-export {validateURL, fetchData, updatePosts};
+export { validateURL, fetchData, updatePosts };

@@ -26,9 +26,9 @@ export default () => {
       valid: true,
     },
 		loadingProcess: {
-      status: 'filling',
-      error: null,
-    },
+			status: 'filling',
+			error: null,
+		},
     feeds: [],
     posts: [],
     uiState: {
@@ -64,7 +64,8 @@ export default () => {
 					.then(({ data }) => {
 						const [feed, posts] = getParsedXML(data.contents);
 						const newFeed = { ...feed, id: _.uniqueId(), url };
-						const newPosts = posts.map((post) => ({ ...post, id: _.uniqueId(), feedId: newFeed.id }));
+						const newPosts = posts.map((post) => (
+							{ ...post, id: _.uniqueId(), feedId: newFeed.id }));
 						watchedState.feeds = [newFeed, ...watchedState.feeds];
 						watchedState.posts = [...newPosts, ...watchedState.posts];
 						watchedState.rssForm.state = 'success';
@@ -94,6 +95,5 @@ export default () => {
 				}
 			});
 			setTimeout(() => updatePosts(watchedState), 5000);
-	});
+    });
 };
-

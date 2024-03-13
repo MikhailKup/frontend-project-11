@@ -23,5 +23,6 @@ rules:
   no-multiple-empty-lines: ['error', { 'max': 1, 'maxEOF': 0 }]
   object-curly-spacing: ['error', 'always']
   quotes: ['error']
+  indent: 0
+  no-tabs: 0
   no-mixed-spaces-and-tabs: 0
-  no-tabs": 0
