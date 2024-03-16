@@ -96,8 +96,13 @@ const renderError = (error, elements, i18n) => {
     elements.button.textContent = 'Добавить';
     elements.feedbackContainer.classList.remove('text-success');
     elements.feedbackContainer.classList.add('text-danger');
-    elements.feedbackContainer.textContent = i18n.t(error);
+		elements.input.classList.add('is-invalid');
+    elements.feedbackContainer.textContent = i18n.t(error.key);
+		return;
   }
+	elements.input.classList.remove('is-invalid');
+	elements.feedbackContainer.classList.add('text-success');
+	elements.feedbackContainer.classList.remove('text-danger');
 };
 
 // Modal
@@ -108,37 +113,51 @@ const renderModal = (state, postId, elements) => {
   elements.modal.querySelector('a.btn').href = post.link;
 };
 
-const handleProcessState = (processState, elements, i18n) => {
-  switch (processState) {
-    case 'filling':
-      elements.input.readOnly = false;
-      elements.button.disabled = false;
-      break;
-    case 'processing':
+// Spinner
+const spinnerControl = (elements, i18n, isOn) => {
+	if (isOn) {
+		elements.button.disabled = true;
+		elements.button.innerHTML = '';
+		const spanSpinner = document.createElement('span');
+		const spanLoading = document.createElement('span');
+		spanSpinner.classList.add('spinner-border', 'spinner-border-sm');
+		spanSpinner.setAttribute('role', 'status');
+		spanSpinner.setAttribute('aria-hidden', 'true');
+		elements.button.append(spanSpinner);
+		spanLoading.classList.add('sr-only');
+		spanLoading.textContent = i18n.t('form.loading');
+		elements.button.append(spanLoading);
+		return;
+	}
+	elements.button.disabled = false;
+	elements.button.innerHTML = '';
+	elements.button.textContent = 'Добавить';
+};
+
+const handleProcessState = (state, elements, i18n) => {
+	const { loadingProcess } = state;
+  switch (loadingProcess.status) {
+    case 'loading':
       elements.input.readOnly = true;
-      elements.button.disabled = true;
-      elements.button.innerHTML = '';
-      elements.spanSpinner.classList.add('spinner-border', 'spinner-border-sm');
-      elements.spanSpinner.setAttribute('role', 'status');
-      elements.spanSpinner.setAttribute('aria-hidden', 'true');
-      elements.button.append(elements.spanSpinner);
-      elements.spanLoading.classList.add('sr-only');
-      elements.spanLoading.textContent = '  Загрузка...';
-      elements.button.append(elements.spanLoading);
+			spinnerControl(elements, i18n, true);
       break;
     case 'success':
       elements.input.readOnly = false;
-      elements.button.disabled = false;
-      elements.button.innerHTML = '';
-      elements.button.textContent = 'Добавить';
-      elements.form.reset();
-      elements.form.focus();
+			spinnerControl(elements, i18n, false);
+			elements.form.reset();
+			elements.form.focus();
       elements.feedbackContainer.classList.remove('text-danger');
       elements.feedbackContainer.classList.add('text-success');
       elements.feedbackContainer.textContent = i18n.t('form.success');
       break;
+		case 'failed': {
+			const error = { key: loadingProcess.error };
+			elements.input.readOnly = false;
+			spinnerControl(elements, i18n, false);
+			renderError(error, elements, i18n);
+			break;
+		}
     default:
-      throw new Error(`Unknown process state: ${processState}`);
   }
 };
 
@@ -156,20 +175,12 @@ export default (state, elements, i18n) => onChange(state, (path, value) => {
     case 'posts':
       renderPosts(state, elements, i18n);
       break;
-    case 'rssForm.error':
-      renderError(value, elements, i18n);
+    case 'rssForm.isValid':
+			renderError(state.rssForm.error, elements, i18n);
       break;
-    case 'rssForm.valid':
-      if (!value) {
-        elements.input.classList.add('is-invalid');
-        return;
-      }
-      elements.input.classList.remove('is-invalid');
-      break;
-    case 'rssForm.state':
-      handleProcessState(value, elements, i18n);
+    case 'loadingProcess.status':
+      handleProcessState(state, elements, i18n);
       break;
     default:
-      throw new Error(`Unknown path: ${path}`);
   }
 });
