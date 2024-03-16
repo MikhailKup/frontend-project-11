@@ -1,5 +1,5 @@
 export default {
-	string: {
+  string: {
     url: () => ({ key: 'form.errors.notValidUrl' }),
   },
   mixed: {

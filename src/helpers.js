@@ -14,8 +14,8 @@ const validateURL = (url, urlsList) => {
     .url()
     .notOneOf(urlsList);
   return schema.validate(url)
-	.then(() => {})
-	.catch((error) => error.message);
+    .then(() => {})
+    .catch((error) => error.message);
 };
 
 // Proxy
@@ -30,9 +30,8 @@ const proxify = (url, base = 'https://allorigins.hexlet.app/get') => {
 // Updater
 const updatePosts = (watchedState) => {
   const { feeds, posts } = watchedState;
-  const promises = feeds.map(({ url, id }) => axios.get(proxify(url), {
-		timeout: axiosTimeout
-	}).then(({ data }) => {
+  const promises = feeds.map(({ url, id }) => axios.get(proxify(url), { timeout: axiosTimeout })
+    .then(({ data }) => {
       const [, receivedPosts] = getParsedXML(data.contents);
       const oldPosts = posts.filter((post) => post.feedId === id);
       const addedPosts = _.differenceBy(receivedPosts, oldPosts, 'link');
@@ -49,15 +48,15 @@ const updatePosts = (watchedState) => {
 
 // Errorrs
 const getError = (error) => {
-	if (axios.isAxiosError(error)) {
-		return 'form.errors.networkProblems';
-	}
-	if (error.NotValidRss) {
-		return 'form.errors.notValidRss';
-	}
-	return 'form.errors.unknownError';
+  if (axios.isAxiosError(error)) {
+    return 'form.errors.networkProblems';
+  }
+  if (error.NotValidRss) {
+    return 'form.errors.notValidRss';
+  }
+  return 'form.errors.unknownError';
 };
 
 export {
-  validateURL, proxify, updatePosts, getError
+  validateURL, proxify, updatePosts, getError,
 };

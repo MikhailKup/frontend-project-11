@@ -96,13 +96,13 @@ const renderError = (error, elements, i18n) => {
     elements.button.textContent = 'Добавить';
     elements.feedbackContainer.classList.remove('text-success');
     elements.feedbackContainer.classList.add('text-danger');
-		elements.input.classList.add('is-invalid');
+    elements.input.classList.add('is-invalid');
     elements.feedbackContainer.textContent = i18n.t(error.key);
-		return;
+    return;
   }
-	elements.input.classList.remove('is-invalid');
-	elements.feedbackContainer.classList.add('text-success');
-	elements.feedbackContainer.classList.remove('text-danger');
+  elements.input.classList.remove('is-invalid');
+  elements.feedbackContainer.classList.add('text-success');
+  elements.feedbackContainer.classList.remove('text-danger');
 };
 
 // Modal
@@ -115,48 +115,48 @@ const renderModal = (state, postId, elements) => {
 
 // Spinner
 const spinnerControl = (elements, i18n, isOn) => {
-	if (isOn) {
-		elements.button.disabled = true;
-		elements.button.innerHTML = '';
-		const spanSpinner = document.createElement('span');
-		const spanLoading = document.createElement('span');
-		spanSpinner.classList.add('spinner-border', 'spinner-border-sm');
-		spanSpinner.setAttribute('role', 'status');
-		spanSpinner.setAttribute('aria-hidden', 'true');
-		elements.button.append(spanSpinner);
-		spanLoading.classList.add('sr-only');
-		spanLoading.textContent = i18n.t('form.loading');
-		elements.button.append(spanLoading);
-		return;
-	}
-	elements.button.disabled = false;
-	elements.button.innerHTML = '';
-	elements.button.textContent = 'Добавить';
+  if (isOn) {
+    elements.button.disabled = true;
+    elements.button.innerHTML = '';
+    const spanSpinner = document.createElement('span');
+    const spanLoading = document.createElement('span');
+    spanSpinner.classList.add('spinner-border', 'spinner-border-sm');
+    spanSpinner.setAttribute('role', 'status');
+    spanSpinner.setAttribute('aria-hidden', 'true');
+    elements.button.append(spanSpinner);
+    spanLoading.classList.add('sr-only');
+    spanLoading.textContent = i18n.t('form.loading');
+    elements.button.append(spanLoading);
+    return;
+  }
+  elements.button.disabled = false;
+  elements.button.innerHTML = '';
+  elements.button.textContent = 'Добавить';
 };
 
 const handleProcessState = (state, elements, i18n) => {
-	const { loadingProcess } = state;
+  const { loadingProcess } = state;
   switch (loadingProcess.status) {
     case 'loading':
       elements.input.readOnly = true;
-			spinnerControl(elements, i18n, true);
+      spinnerControl(elements, i18n, true);
       break;
     case 'success':
       elements.input.readOnly = false;
-			spinnerControl(elements, i18n, false);
-			elements.form.reset();
-			elements.form.focus();
+      spinnerControl(elements, i18n, false);
+      elements.form.reset();
+      elements.form.focus();
       elements.feedbackContainer.classList.remove('text-danger');
       elements.feedbackContainer.classList.add('text-success');
       elements.feedbackContainer.textContent = i18n.t('form.success');
       break;
-		case 'failed': {
-			const error = { key: loadingProcess.error };
-			elements.input.readOnly = false;
-			spinnerControl(elements, i18n, false);
-			renderError(error, elements, i18n);
-			break;
-		}
+    case 'failed': {
+      const error = { key: loadingProcess.error };
+      elements.input.readOnly = false;
+      spinnerControl(elements, i18n, false);
+      renderError(error, elements, i18n);
+      break;
+    }
     default:
   }
 };
@@ -176,7 +176,7 @@ export default (state, elements, i18n) => onChange(state, (path, value) => {
       renderPosts(state, elements, i18n);
       break;
     case 'rssForm.isValid':
-			renderError(state.rssForm.error, elements, i18n);
+      renderError(state.rssForm.error, elements, i18n);
       break;
     case 'loadingProcess.status':
       handleProcessState(state, elements, i18n);
