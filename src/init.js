@@ -92,10 +92,6 @@ export default () => {
       });
 
       elements.postsContainer.addEventListener('click', ({ target }) => {
-        if (target.closest('a')) {
-          const { id } = target.dataset;
-          watchedState.uiState.visitedPosts.add(id);
-        }
         if (target.closest('button')) {
           const { id } = target.dataset;
           watchedState.uiState.visitedPosts.add(id);
